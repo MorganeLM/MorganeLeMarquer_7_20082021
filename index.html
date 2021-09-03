@@ -16,16 +16,29 @@
     </header>
     <main class="container">
         <section id="search">
-            <div class="input-group mt-4 bg-gray-300 placeholder-gray-500 p-4 border-1 rounded-md">
+            <div class="input-group mt-4 p-4 border-1 rounded-md">
                 <input type="text" class="form-control" aria-label="Rechercher un ingrédient, appareil, ustenciles ou recette" placeholder="Rechercher un ingrédient, appareil, ustenciles ou recette">
                 <div class="input-group-append">
-                  <span class="input-group-text"><i class="las la-search"></i></span>
+                    <span class="input-group-text"><i class="las la-search"></i></span>
                 </div>
-              </div>
-              <div id="selected_items"></div>
-              <div>
+            </div>
 
-              </div>
+            <div id="selected_items"></div>
+
+            <div id="advancedSearch" style="display: flex;">
+                <div class="input-group p-4 border-1 rounded-md">
+                    <input id="ingredientInput" type="text" class="form-control" aria-label="Ingrédient" placeholder="Ingrédient">
+                    <ul id="ingredientList"></ul>
+                </div>
+                <div class="input-group p-4 border-1 rounded-md">
+                    <input id="applianceInput" type="text" class="form-control" aria-label="Appareil" placeholder="Appareil">
+                    <ul id="applianceList"></ul>
+                </div>
+                <div id="ustensilInput" class="input-group p-4 border-1 rounded-md">
+                    <input type="text" class="form-control" aria-label="Ustensiles" placeholder="Ustensiles">
+                    <ul id="ustensilList"></ul>
+                </div>
+            </div>
         </section>
         <section id="result-list">
             <i class="las la-clock"></i>

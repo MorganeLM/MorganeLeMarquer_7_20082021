@@ -8,3 +8,44 @@ header{
 header img{
     width: 250px;
 }
+
+ul{
+    list-style-type: none;
+}
+
+ul > li{
+    margin: 0;
+    padding: 5px;
+    position: relative;
+    left: -30px;
+    width: 100%;
+}
+
+#advancedSearch > div{
+    position: relative;
+}
+
+#advancedSearch .input-group > .custom-file, .input-group > .custom-select, .input-group > .form-control{
+    width: 100px;
+}
+
+#ingredientList, #applianceList, #ustensilList{
+    position: absolute;
+    top: 61px;
+    width: 90%;
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#ingredientList{
+    background-color: #3b82f6;
+}
+
+#applianceList{
+    background-color: #34d399;
+}
+
+#ustensilList{
+    background-color: #f87171;
+}
