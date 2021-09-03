@@ -16,19 +16,26 @@ ul{
 ul > li{
     margin: 0;
     padding: 5px;
+    position: relative;
+    left: -30px;
+    width: 100%;
 }
 
 #advancedSearch > div{
     position: relative;
 }
 
+#advancedSearch .input-group > .custom-file, .input-group > .custom-select, .input-group > .form-control{
+    width: 100px;
+}
+
 #ingredientList, #applianceList, #ustensilList{
     position: absolute;
     top: 61px;
+    width: 90%;
     color: white;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    width: 100%;
 }
 
 #ingredientList{
