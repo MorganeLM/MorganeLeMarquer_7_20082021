@@ -9,7 +9,7 @@ resultListElement.innerHTML = RECIPES[0]['name'];
 
 let recipes = RECIPES;
 let selectedIngredients = [];
-let selectedAppliances = [];
+let selectedAppliance;
 let selectedUstencils = [];
 
 document.querySelector('#ingredientInput').addEventListener('click', function(){
@@ -38,7 +38,7 @@ document.querySelector('#applianceInput').addEventListener('click', function(){
     // e.target is the clicked element!
     if(e.target && e.target.nodeName == "LI") {
       if(selectedAppliances.indexOf(e.target.innerHTML) === -1){
-        selectedAppliances.push(e.target.innerHTML)
+        selectedAppliance = e.target.innerHTML;
       }
     }
   });
@@ -72,16 +72,22 @@ function matchUstensils(recipe, selectedUstencils){
   })
 }
 
-function matchAppliance(recipe, selectedAppliances){
-  return selectedAppliances.every(ingredient => {
-    return recipe.appliance.includes(ingredient)
-  })
+function matchAppliance(recipe, selectedAppliance){
+  return selectedAppliance === recipe.appliance;
 }
 
-console.log(matchIngredients({ingredients: ['coco', 'lait']}, ['huile', 'truc']))
-console.log(matchIngredients({ingredients: ['coco', 'lait']}, ['coco', 'lait', 'truc']))
+// console.log(matchIngredients({ingredients: ['coco', 'lait']}, ['huile', 'truc']))
+// console.log(matchIngredients({ingredients: ['coco', 'lait']}, ['coco', 'lait', 'truc']))
 
-let recipesSorted = recipes.filter((recipe) => {
+let recipesSortedByTags = recipes.filter((recipe) => {  
+  return matchIngredients(recipe, selectedIngredients) && 
+  matchUstensils(recipe, selectedUstencils) && 
+  matchAppliance(recipe, selectedAppliance) ;
+});
+
+console.log(recipesSortedByTags)
+
+let recipesSorted = recipesSortedByTags.filter((recipe) => {
   return recipe.name.toLowerCase().includes(searchValue) ||  
   recipe.ingredients.some((i) => i.ingredient.toLowerCase().includes(searchValue)) ||  
   recipe.description.toLowerCase().includes(searchValue);
@@ -89,9 +95,9 @@ let recipesSorted = recipes.filter((recipe) => {
 
 console.log(recipesSorted)
 
-console.log(tagModule.getIngredientForTags(recipesSorted));
-console.log(tagModule.getUstensilForTags(recipesSorted));
-console.log(tagModule.getApplianceForTags(recipesSorted));
+console.log(tagService.getIngredientForTags(recipesSorted));
+console.log(tagService.getUstensilForTags(recipesSorted));
+console.log(tagService.getApplianceForTags(recipesSorted));
 
 
 
