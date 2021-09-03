@@ -8,3 +8,37 @@ header{
 header img{
     width: 250px;
 }
+
+ul{
+    list-style-type: none;
+}
+
+ul > li{
+    margin: 0;
+    padding: 5px;
+}
+
+#advancedSearch > div{
+    position: relative;
+}
+
+#ingredientList, #applianceList, #ustensilList{
+    position: absolute;
+    top: 61px;
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+}
+
+#ingredientList{
+    background-color: #3b82f6;
+}
+
+#applianceList{
+    background-color: #34d399;
+}
+
+#ustensilList{
+    background-color: #f87171;
+}
