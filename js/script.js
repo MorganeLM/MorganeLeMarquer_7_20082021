@@ -1,16 +1,16 @@
-'use stric';
+'use strict';
 import { RECIPES } from "/js/recipes.js";
 import * as tagService from "/js/tags.js";
-
-console.log(RECIPES);
 
 let resultListElement = document.querySelector('#result-list');
 resultListElement.innerHTML = RECIPES[0]['name'];
 
 let recipes = RECIPES;
 let selectedIngredients = [];
-let selectedAppliance;
+let selectedAppliance = '';
 let selectedUstencils = [];
+
+let searchValue = document.querySelector('#search input').value
 
 document.querySelector('#ingredientInput').addEventListener('click', function(){
   let list = document.querySelector('#ingredientList');
@@ -37,7 +37,7 @@ document.querySelector('#applianceInput').addEventListener('click', function(){
   list.addEventListener("click", function(e) {
     // e.target is the clicked element!
     if(e.target && e.target.nodeName == "LI") {
-      if(selectedAppliances.indexOf(e.target.innerHTML) === -1){
+      if(selectedAppliance.indexOf(e.target.innerHTML) === -1){
         selectedAppliance = e.target.innerHTML;
       }
     }
@@ -60,32 +60,91 @@ document.querySelector('#ustensilInput').addEventListener('click', function(){
   });
 })
 
+// function matchIngredients(recipe, selectedIngredients){
+//   return selectedIngredients.every(ingredient => recipe.ingredients.includes(ingredient));
+// }
+
+// function matchIngredients(recipe, selectedIngredients){
+//   return selectedIngredients.every(ingredient => {
+//     recipe.ingredients.forEach(ingredientOfRecipe => {
+//       console.log(ingredientOfRecipe.ingredient, ingredient)
+//       return ingredientOfRecipe.ingredient === ingredient
+//     })
+//   });
+// }
+
 function matchIngredients(recipe, selectedIngredients){
-  return selectedIngredients.every(ingredient => {
-    return recipe.ingredients.includes(ingredient)
-  })
+  let reducedRecipeIngredients = [];
+  recipe.ingredients.forEach(ing => reducedRecipeIngredients.push(ing.ingredient))
+  //console.log(reducedRecipeIngredients)
+  return selectedIngredients.every(ingredient => reducedRecipeIngredients.includes(ingredient));
 }
 
+// let exRecipe = {
+//   "id": 50,
+//   "name": "Frangipane",
+//   "servings": 2,
+//   "ingredients": [
+//     {
+//       "ingredient": "Pâte feuilletée",
+//       "quantity": 400,
+//       "unit": "grammes"
+//     },
+//     {
+//       "ingredient": "Oeuf",
+//       "quantity": 6
+//     },
+//     {
+//       "ingredient": "Poudre d'amendes",
+//       "quantity": 500,
+//       "unit": "grammes"
+//     },
+//     {
+//       "ingredient": "Beurre",
+//       "quantity": 500,
+//       "unit": "grammes"
+//     },
+//     {
+//       "ingredient": "Sucre glace",
+//       "quantity": 500,
+//       "unit": "grammes"
+//     }
+//   ],
+//   "time": 60,
+//   "description": "Préparer la frangipane : Mélanger le sucre la poudre d'amander, le beurre et les oeufs. Etaler la moitier de la pate feuilleté et mettre dans un moule à tarte. Garnir de frangipane et recouvrir du reste de pate feuilletée. Mettre au four 30 minutes",
+//   "appliance": "Four",
+//   "ustensils": [
+//     "rouleau à patisserie",
+//     "fouet"
+//   ]
+// }
+// let exSelectedIng = ['Beurre', 'Oeuf']
+// console.log('exTest', matchIngredients(exRecipe, exSelectedIng))
+
 function matchUstensils(recipe, selectedUstencils){
-  return selectedUstencils.every(ingredient => {
-    return recipe.ustencils.includes(ingredient)
-  })
+  return selectedUstencils.every(ustencil => recipe.ustensils.includes(ustencil))
 }
 
 function matchAppliance(recipe, selectedAppliance){
-  return selectedAppliance === recipe.appliance;
+  if(selectedAppliance){
+    return selectedAppliance === recipe.appliance;
+  }else{
+    return true;
+  }
 }
 
-// console.log(matchIngredients({ingredients: ['coco', 'lait']}, ['huile', 'truc']))
-// console.log(matchIngredients({ingredients: ['coco', 'lait']}, ['coco', 'lait', 'truc']))
+selectedIngredients = [];
+selectedUstencils = []
+searchValue = 'coco';
+selectedAppliance = 'Saladier'
 
-let recipesSortedByTags = recipes.filter((recipe) => {  
-  return matchIngredients(recipe, selectedIngredients) && 
-  matchUstensils(recipe, selectedUstencils) && 
-  matchAppliance(recipe, selectedAppliance) ;
+let recipesSortedByTags = recipes.filter((recipe) => {
+  //console.log(recipe)
+  //console.log(matchIngredients(recipe, selectedIngredients))
+  return matchIngredients(recipe, selectedIngredients) && matchUstensils(recipe, selectedUstencils) && matchAppliance(recipe, selectedAppliance);
 });
 
-console.log(recipesSortedByTags)
+console.log('recipesSortedByTags', recipesSortedByTags)
 
 let recipesSorted = recipesSortedByTags.filter((recipe) => {
   return recipe.name.toLowerCase().includes(searchValue) ||  
@@ -95,9 +154,9 @@ let recipesSorted = recipesSortedByTags.filter((recipe) => {
 
 console.log(recipesSorted)
 
-console.log(tagService.getIngredientForTags(recipesSorted));
-console.log(tagService.getUstensilForTags(recipesSorted));
-console.log(tagService.getApplianceForTags(recipesSorted));
+//console.log(tagService.getIngredientForTags(recipesSorted));
+//console.log(tagService.getUstensilForTags(recipesSorted));
+//console.log(tagService.getApplianceForTags(recipesSorted));
 
 
 
