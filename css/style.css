@@ -1,4 +1,6 @@
-
+p{
+    margin: 0;
+}
 
 header{
     text-align: center;
@@ -13,7 +15,7 @@ ul{
     list-style-type: none;
 }
 
-ul > li{
+#search ul > li{
     margin: 0;
     padding: 5px;
     position: relative;
@@ -49,3 +51,80 @@ ul > li{
 #ustensilList{
     background-color: #f87171;
 }
+
+#result-list{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.recipe{
+    border-radius: 10px;
+    background-color: rgb(240, 240, 240);
+    padding-bottom: 20px;
+}
+
+.recipe_image{
+    width: 100%;
+    overflow: hidden;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.recipe_image img{
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.recipe_header{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px 0;
+}
+
+.recipe_header h2{
+    font-size: 1.1em;
+}
+
+.recipe_header p{
+    font-weight: 600;
+}
+
+.recipe_header i{
+    font-size: 1.3em;
+}
+
+.recipe_content{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-size: 0.9em;
+    padding: 10px 20px 0;
+}
+
+.recipe_content ul > li{
+    margin: 0;
+    position: relative;
+    left: -40px;
+    width: 122%;
+    font-size: 0.9em;
+}
+
+.recipe_content ul > li strong{
+    font-weight: 600;
+}
+
+.recipe_content p{
+    position: relative;
+    font-size: 0.9em;
+    height: 160px;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+}
+
+/* .recipe_content p::after{
+    content: "...";
+    position: absolute;
+    right: 10px;
+} */

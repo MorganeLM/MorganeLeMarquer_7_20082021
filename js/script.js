@@ -3,7 +3,7 @@ import { RECIPES } from "/js/recipes.js";
 import * as tagService from "/js/tags.js";
 
 let resultListElement = document.querySelector('#result-list');
-resultListElement.innerHTML = RECIPES[0]['name'];
+// resultListElement.innerHTML = RECIPES[0]['name'];
 
 let recipes = RECIPES;
 let selectedIngredients = [];
@@ -133,16 +133,12 @@ function matchAppliance(recipe, selectedAppliance){
   }
 }
 
-selectedIngredients = [];
-selectedUstencils = []
-searchValue = 'coco';
-selectedAppliance = 'Saladier'
+ selectedIngredients = ['Carotte'];
+// selectedUstencils = []
+ searchValue = '';
+// selectedAppliance = ''
 
-let recipesSortedByTags = recipes.filter((recipe) => {
-  //console.log(recipe)
-  //console.log(matchIngredients(recipe, selectedIngredients))
-  return matchIngredients(recipe, selectedIngredients) && matchUstensils(recipe, selectedUstencils) && matchAppliance(recipe, selectedAppliance);
-});
+let recipesSortedByTags = recipes.filter((recipe) => matchIngredients(recipe, selectedIngredients) && matchUstensils(recipe, selectedUstencils) && matchAppliance(recipe, selectedAppliance));
 
 console.log('recipesSortedByTags', recipesSortedByTags)
 
@@ -152,13 +148,37 @@ let recipesSorted = recipesSortedByTags.filter((recipe) => {
   recipe.description.toLowerCase().includes(searchValue);
 });
 
-console.log(recipesSorted)
+console.log(formatRecipes(recipesSorted))
 
 //console.log(tagService.getIngredientForTags(recipesSorted));
 //console.log(tagService.getUstensilForTags(recipesSorted));
 //console.log(tagService.getApplianceForTags(recipesSorted));
 
-
+function formatRecipes(recipes){
+  recipes.forEach((recipe, index) => {
+    console.log(recipe)
+    resultListElement.insertAdjacentHTML('beforeend', `
+    <article class="recipe">
+        <div class="recipe_image"><img src='/images/recipe-placeholder.jpg' alt=""></div>
+        <div>
+            <div class="recipe_header">
+                <h2>${recipe.name}</h2>
+                <p><i class="las la-clock"></i> ${recipe.time} min</p>
+            </div>
+            <div class="recipe_content">
+                <ul id="ingredientsList_${index}" class="recipe_content_ingredients">
+                </ul>
+                <p>${recipe.description}</p>
+            </div>
+        </div>
+    </article>`);
+    let ingredientList = document.querySelector(`#ingredientsList_${index}`);
+    recipe.ingredients.forEach(ingredient => {
+      let unit = ingredient.unit || "";
+      ingredientList.insertAdjacentHTML('beforeend', `<li><strong>${ingredient.ingredient} :</strong> ${ingredient.quantity} ${unit}</li>`)
+    })
+  })
+}
 
 
 
