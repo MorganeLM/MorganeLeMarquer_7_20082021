@@ -38,6 +38,9 @@ ul{
     color: white;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    z-index: 3;
+    max-height: 400px;
+    overflow-y: scroll;
 }
 
 #ingredientList{
@@ -115,10 +118,10 @@ ul{
     font-weight: 600;
 }
 
-.recipe_content p{
+.recipe_content{
     position: relative;
     font-size: 0.9em;
-    height: 160px;
+    height: 165px;
     overflow-y: hidden;
     text-overflow: ellipsis;
 }

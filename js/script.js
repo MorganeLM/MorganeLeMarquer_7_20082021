@@ -6,14 +6,25 @@ let resultListElement = document.querySelector('#result-list');
 // resultListElement.innerHTML = RECIPES[0]['name'];
 
 let recipes = RECIPES;
+let searchValue = ''
 let selectedIngredients = [];
 let selectedAppliance = '';
 let selectedUstencils = [];
+// Display all recipes on load
+displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
 
-let searchValue = document.querySelector('#search input').value
+let searchInput = document.querySelector('#search input');
+searchInput.addEventListener('input', function(e){
+  searchValue = e.target.value.trim();
+  if(searchValue.length >= 3){
+    console.log('launchSearch?')
+    displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
+  }
+})
 
 document.querySelector('#ingredientInput').addEventListener('click', function(){
   let list = document.querySelector('#ingredientList');
+  list.style.display = 'block';
   let tags = tagService.getIngredientForTags(RECIPES);
   tags.forEach(tag => {
     list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
@@ -25,12 +36,14 @@ document.querySelector('#ingredientInput').addEventListener('click', function(){
         selectedIngredients.push(e.target.innerHTML)
       }
     }
+    displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
+    list.style.display = 'none';
   });
 })
 
 document.querySelector('#applianceInput').addEventListener('click', function(){
   let list = document.querySelector('#applianceList');
-  let tags = tagService.getUstensilForTags(RECIPES);
+  let tags = tagService.getApplianceForTags(RECIPES);
   tags.forEach(tag => {
     list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
   })
@@ -41,6 +54,7 @@ document.querySelector('#applianceInput').addEventListener('click', function(){
         selectedAppliance = e.target.innerHTML;
       }
     }
+    displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
   });
 })
 
@@ -57,69 +71,15 @@ document.querySelector('#ustensilInput').addEventListener('click', function(){
         selectedUstencils.push(e.target.innerHTML)
       }
     }
+    displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
   });
 })
-
-// function matchIngredients(recipe, selectedIngredients){
-//   return selectedIngredients.every(ingredient => recipe.ingredients.includes(ingredient));
-// }
-
-// function matchIngredients(recipe, selectedIngredients){
-//   return selectedIngredients.every(ingredient => {
-//     recipe.ingredients.forEach(ingredientOfRecipe => {
-//       console.log(ingredientOfRecipe.ingredient, ingredient)
-//       return ingredientOfRecipe.ingredient === ingredient
-//     })
-//   });
-// }
 
 function matchIngredients(recipe, selectedIngredients){
   let reducedRecipeIngredients = [];
   recipe.ingredients.forEach(ing => reducedRecipeIngredients.push(ing.ingredient))
-  //console.log(reducedRecipeIngredients)
   return selectedIngredients.every(ingredient => reducedRecipeIngredients.includes(ingredient));
 }
-
-// let exRecipe = {
-//   "id": 50,
-//   "name": "Frangipane",
-//   "servings": 2,
-//   "ingredients": [
-//     {
-//       "ingredient": "Pâte feuilletée",
-//       "quantity": 400,
-//       "unit": "grammes"
-//     },
-//     {
-//       "ingredient": "Oeuf",
-//       "quantity": 6
-//     },
-//     {
-//       "ingredient": "Poudre d'amendes",
-//       "quantity": 500,
-//       "unit": "grammes"
-//     },
-//     {
-//       "ingredient": "Beurre",
-//       "quantity": 500,
-//       "unit": "grammes"
-//     },
-//     {
-//       "ingredient": "Sucre glace",
-//       "quantity": 500,
-//       "unit": "grammes"
-//     }
-//   ],
-//   "time": 60,
-//   "description": "Préparer la frangipane : Mélanger le sucre la poudre d'amander, le beurre et les oeufs. Etaler la moitier de la pate feuilleté et mettre dans un moule à tarte. Garnir de frangipane et recouvrir du reste de pate feuilletée. Mettre au four 30 minutes",
-//   "appliance": "Four",
-//   "ustensils": [
-//     "rouleau à patisserie",
-//     "fouet"
-//   ]
-// }
-// let exSelectedIng = ['Beurre', 'Oeuf']
-// console.log('exTest', matchIngredients(exRecipe, exSelectedIng))
 
 function matchUstensils(recipe, selectedUstencils){
   return selectedUstencils.every(ustencil => recipe.ustensils.includes(ustencil))
@@ -133,30 +93,21 @@ function matchAppliance(recipe, selectedAppliance){
   }
 }
 
- selectedIngredients = ['Carotte'];
-// selectedUstencils = []
- searchValue = '';
-// selectedAppliance = ''
+function launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue){
+  let recipesSortedByTags = recipes.filter((recipe) => matchIngredients(recipe, selectedIngredients) && matchUstensils(recipe, selectedUstencils) && matchAppliance(recipe, selectedAppliance));
 
-let recipesSortedByTags = recipes.filter((recipe) => matchIngredients(recipe, selectedIngredients) && matchUstensils(recipe, selectedUstencils) && matchAppliance(recipe, selectedAppliance));
+  let recipesSorted = recipesSortedByTags.filter((recipe) => {
+    return recipe.name.toLowerCase().includes(searchValue) ||  
+    recipe.ingredients.some((i) => i.ingredient.toLowerCase().includes(searchValue)) ||  
+    recipe.description.toLowerCase().includes(searchValue);
+  });
 
-console.log('recipesSortedByTags', recipesSortedByTags)
+  return recipesSorted;
+}
 
-let recipesSorted = recipesSortedByTags.filter((recipe) => {
-  return recipe.name.toLowerCase().includes(searchValue) ||  
-  recipe.ingredients.some((i) => i.ingredient.toLowerCase().includes(searchValue)) ||  
-  recipe.description.toLowerCase().includes(searchValue);
-});
-
-console.log(formatRecipes(recipesSorted))
-
-//console.log(tagService.getIngredientForTags(recipesSorted));
-//console.log(tagService.getUstensilForTags(recipesSorted));
-//console.log(tagService.getApplianceForTags(recipesSorted));
-
-function formatRecipes(recipes){
+function displayRecipes(recipes){
+  resultListElement.innerHTML = "";
   recipes.forEach((recipe, index) => {
-    console.log(recipe)
     resultListElement.insertAdjacentHTML('beforeend', `
     <article class="recipe">
         <div class="recipe_image"><img src='/images/recipe-placeholder.jpg' alt=""></div>
@@ -175,8 +126,34 @@ function formatRecipes(recipes){
     let ingredientList = document.querySelector(`#ingredientsList_${index}`);
     recipe.ingredients.forEach(ingredient => {
       let unit = ingredient.unit || "";
-      ingredientList.insertAdjacentHTML('beforeend', `<li><strong>${ingredient.ingredient} :</strong> ${ingredient.quantity} ${unit}</li>`)
+      let quantity = ingredient.quantity || "nd";
+      ingredientList.insertAdjacentHTML('beforeend', `<li><strong>${ingredient.ingredient} :</strong> ${quantity} ${unit}</li>`)
     })
+  });
+
+  console.log('selectedIngredients', selectedIngredients)
+  console.log('selectedAppliance', selectedAppliance)
+  console.log('selectedUstencils', selectedUstencils)
+
+  displaySelectedTag(selectedIngredients, 'ingredientTag')
+  displaySelectedTag([selectedAppliance], 'applianceTag');
+  displaySelectedTag(selectedUstencils, 'ustensilTag')
+}
+
+function displaySelectedTag(arr, type){
+  let tagList = document.querySelector('#selected_items');
+  arr.forEach((tag, index) => {
+    if(tag){
+      tag = tag[0].toUpperCase() + tag.substring(1);
+      tagList.insertAdjacentHTML('beforeend', `
+      <div class='${type}'>${tag} <i class="las la-times-circle" id=tag_${index}></i></div>
+      `)
+      document.querySelector(`#tag_${index}`).addEventListener('click', () =>{
+        arr.splice(arr.indexOf(tag), 1);
+        tagList.innerHTML = "";
+        console.log(arr)
+      })
+    }
   })
 }
 
