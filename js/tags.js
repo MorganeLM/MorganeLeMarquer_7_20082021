@@ -3,9 +3,9 @@ export function getIngredientForTags(array){
     let ingredients = [];
     array.forEach(element => {
         element.ingredients.forEach(ingredient => {
-        if(!ingredients.includes(ingredient.ingredient)){
-            ingredients.push(ingredient.ingredient)
-        }
+            if(!ingredients.includes(ingredient.ingredient)){
+                ingredients.push(ingredient.ingredient)
+            }
         })
     });
     return ingredients.sort();
@@ -15,9 +15,9 @@ export function getUstensilForTags(array){
     let ustensils = [];
     array.forEach(element => {
         element.ustensils.forEach(ustensil => {
-        if(!ustensils.includes(ustensil)){
-            ustensils.push(ustensil)
-        }
+            if(!ustensils.includes(ustensil)){
+                ustensils.push(ustensil)
+            }
         })
     });
     return ustensils.sort();

@@ -3,8 +3,8 @@ import { RECIPES } from "/js/recipes.js";
 import * as tagService from "/js/tags.js";
 
 let resultListElement = document.querySelector('#result-list');
-// resultListElement.innerHTML = RECIPES[0]['name'];
 
+// Initialize the search 
 let recipes = RECIPES;
 let searchValue = ''
 let selectedIngredients = [];
@@ -14,18 +14,20 @@ let selectedUstencils = [];
 displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
 
 let searchInput = document.querySelector('#search input');
-searchInput.addEventListener('input', function(e){
+searchInput.value = "";
+searchInput.addEventListener('change', function(e){
   searchValue = e.target.value.trim();
   if(searchValue.length >= 3){
-    console.log('launchSearch?')
     displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
   }
 })
 
+
 document.querySelector('#ingredientInput').addEventListener('click', function(){
   let list = document.querySelector('#ingredientList');
   list.style.display = 'block';
-  let tags = tagService.getIngredientForTags(RECIPES);
+  let tags = tagService.getIngredientForTags(recipes);
+  console.log(tags)
   tags.forEach(tag => {
     list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
   })
@@ -36,14 +38,17 @@ document.querySelector('#ingredientInput').addEventListener('click', function(){
         selectedIngredients.push(e.target.innerHTML)
       }
     }
-    displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
+    recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
+    displayRecipes(recipes);
+    displaySelectedTag(selectedIngredients, 'ingredientTag')
+    list.innerHTML = "";
     list.style.display = 'none';
   });
 })
 
 document.querySelector('#applianceInput').addEventListener('click', function(){
   let list = document.querySelector('#applianceList');
-  let tags = tagService.getApplianceForTags(RECIPES);
+  let tags = tagService.getApplianceForTags(recipes);
   tags.forEach(tag => {
     list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
   })
@@ -55,12 +60,13 @@ document.querySelector('#applianceInput').addEventListener('click', function(){
       }
     }
     displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
+    displaySelectedTag([selectedAppliance], 'applianceTag');
   });
 })
 
 document.querySelector('#ustensilInput').addEventListener('click', function(){
   let list = document.querySelector('#ustensilList');
-  let tags = tagService.getUstensilForTags(RECIPES);
+  let tags = tagService.getUstensilForTags(recipes);
   tags.forEach(tag => {
     list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
   })
@@ -72,8 +78,11 @@ document.querySelector('#ustensilInput').addEventListener('click', function(){
       }
     }
     displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
+    displaySelectedTag(selectedUstencils, 'ustensilTag')
   });
 })
+
+
 
 function matchIngredients(recipe, selectedIngredients){
   let reducedRecipeIngredients = [];
@@ -130,18 +139,11 @@ function displayRecipes(recipes){
       ingredientList.insertAdjacentHTML('beforeend', `<li><strong>${ingredient.ingredient} :</strong> ${quantity} ${unit}</li>`)
     })
   });
-
-  console.log('selectedIngredients', selectedIngredients)
-  console.log('selectedAppliance', selectedAppliance)
-  console.log('selectedUstencils', selectedUstencils)
-
-  displaySelectedTag(selectedIngredients, 'ingredientTag')
-  displaySelectedTag([selectedAppliance], 'applianceTag');
-  displaySelectedTag(selectedUstencils, 'ustensilTag')
 }
 
 function displaySelectedTag(arr, type){
   let tagList = document.querySelector('#selected_items');
+  tagList.innerHTML = "";
   arr.forEach((tag, index) => {
     if(tag){
       tag = tag[0].toUpperCase() + tag.substring(1);
@@ -151,7 +153,8 @@ function displaySelectedTag(arr, type){
       document.querySelector(`#tag_${index}`).addEventListener('click', () =>{
         arr.splice(arr.indexOf(tag), 1);
         tagList.innerHTML = "";
-        console.log(arr)
+        displaySelectedTag(arr, type)
+        displayRecipes(launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
       })
     }
   })
