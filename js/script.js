@@ -10,6 +10,9 @@ let searchValue = ''
 let selectedIngredients = [];
 let selectedAppliance = '';
 let selectedUstencils = [];
+let ingredientListToggle = false;
+let applianceListToggle = false;
+let ustencilListToggle = false;
 // Display all recipes on load
 displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
 
@@ -18,76 +21,134 @@ let searchInput = document.querySelector('#search input');
 searchInput.addEventListener('input', function(e){
   searchValue = e.target.value.trim();
   if(searchValue.length >= 3){
-    recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue)
-    displayRecipes(recipes);
+    recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, searchValue)
+  }else{
+    recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, '')
+  }
+  displayRecipes(recipes);
+})
+
+let searchIngredientInput = document.querySelector('#ingredientInput');
+let searchApplianceInput = document.querySelector('#applianceInput');
+let searchUstensilInput = document.querySelector('#ustensilInput');
+let tags;
+// searchIngredientInput.addEventListener('input', filterSelectedTagList(tags, searchIngredientInput.value))
+
+// generic function for event on input -> not working
+function displayTags(tagListToggle, listElement, getItemsForTag, selectedItems, type){
+  tagListToggle = !tagListToggle;
+  let list = document.querySelector(listElement);
+  if(tagListToggle){
+    list.style.display = 'block';
+    tags = tagService.getItemsForTag(recipes);
+    console.log(tags)
+    tags.forEach(tag => {
+      list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
+    })
+    list.addEventListener("click", function(e) {
+      // e.target is the clicked element!
+      if(e.target && e.target.nodeName == "LI") {
+        if(selectedItems.indexOf(e.target.innerHTML) === -1){
+          selectedItems.push(e.target.innerHTML)
+        }
+      }
+      recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
+      displayRecipes(recipes);
+      displaySelectedTag(selectedItems, type)
+      list.innerHTML = "";
+      list.style.display = 'none';
+    });
+  }else{
+    list.style.display = 'none';
+  }
+}
+
+document.querySelector('#ingredientInput').addEventListener('click', function(){
+  ingredientListToggle = !ingredientListToggle;
+  let list = document.querySelector('#ingredientList');
+  if(ingredientListToggle){
+    list.style.display = 'block';
+    tags = tagService.getIngredientForTags(recipes);
+    console.log(tags)
+    tags.forEach(tag => {
+      list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
+    })
+    list.addEventListener("click", function(e) {
+      // e.target is the clicked element!
+      if(e.target && e.target.nodeName == "LI") {
+        if(selectedIngredients.indexOf(e.target.innerHTML) === -1){
+          selectedIngredients.push(e.target.innerHTML)
+        }
+      }
+      recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
+      displayRecipes(recipes);
+      displaySelectedTag(selectedIngredients, 'ingredient');
+      list.innerHTML = "";
+      list.style.display = 'none';
+    });
+  }else{
+    list.style.display = 'none';
   }
 })
 
-
-document.querySelector('#ingredientInput').addEventListener('click', function(){
-  let list = document.querySelector('#ingredientList');
-  list.style.display = 'block';
-  let tags = tagService.getIngredientForTags(recipes);
-  console.log(tags)
-  tags.forEach(tag => {
-    list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
-  })
-  list.addEventListener("click", function(e) {
-    // e.target is the clicked element!
-    if(e.target && e.target.nodeName == "LI") {
-      if(selectedIngredients.indexOf(e.target.innerHTML) === -1){
-        selectedIngredients.push(e.target.innerHTML)
-      }
-    }
-    recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
-    displayRecipes(recipes);
-    displaySelectedTag(selectedIngredients, 'ingredient')
-    list.innerHTML = "";
-    list.style.display = 'none';
-  });
-})
-
 document.querySelector('#applianceInput').addEventListener('click', function(){
+  applianceListToggle = !applianceListToggle;
   let list = document.querySelector('#applianceList');
-  let tags = tagService.getApplianceForTags(recipes);
-  tags.forEach(tag => {
-    list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
-  })
-  list.addEventListener("click", function(e) {
-    // e.target is the clicked element!
-    if(e.target && e.target.nodeName == "LI") {
-      if(selectedAppliance.indexOf(e.target.innerHTML) === -1){
-        selectedAppliance = e.target.innerHTML;
+  if(applianceListToggle){
+    let tags = tagService.getApplianceForTags(recipes);
+    tags.forEach(tag => {
+      list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
+    })
+    list.addEventListener("click", function(e) {
+      // e.target is the clicked element!
+      if(e.target && e.target.nodeName == "LI") {
+        if(selectedAppliance.indexOf(e.target.innerHTML) === -1){
+          selectedAppliance = e.target.innerHTML;
+        }
       }
-    }
-    recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
-    displayRecipes(recipes);
-    displaySelectedTag([selectedAppliance], 'appliance')
-    list.innerHTML = "";
+      recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
+      displayRecipes(recipes);
+      displaySelectedTag([selectedAppliance], 'appliance')
+      list.innerHTML = "";
+      list.style.display = 'none';
+    });
+  }else{
     list.style.display = 'none';
-  });
+  }
 })
 
 document.querySelector('#ustensilInput').addEventListener('click', function(){
+  ustencilListToggle = !ustencilListToggle;
   let list = document.querySelector('#ustensilList');
-  let tags = tagService.getUstensilForTags(recipes);
-  tags.forEach(tag => {
-    list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
-  })
-  list.addEventListener("click", function(e) {
-    // e.target is the clicked element!
-    if(e.target && e.target.nodeName == "LI") {
-      if(selectedUstencils.indexOf(e.target.innerHTML) === -1){
-        selectedUstencils.push(e.target.innerHTML)
+  if(ustencilListToggle){
+    let tags = tagService.getUstensilForTags(recipes);
+    tags.forEach(tag => {
+      list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
+    })
+    list.addEventListener("click", function(e) {
+      // e.target is the clicked element!
+      if(e.target && e.target.nodeName == "LI") {
+        if(selectedUstencils.indexOf(e.target.innerHTML) === -1){
+          selectedUstencils.push(e.target.innerHTML)
+        }
       }
-    }
-    recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
-    displayRecipes(recipes);
-    displaySelectedTag(selectedUstencils, 'ustensil');
-    list.innerHTML = "";
+      recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
+      displayRecipes(recipes);
+      displaySelectedTag(selectedUstencils, 'ustensil');
+      list.innerHTML = "";
+      list.style.display = 'none';
+    });
+  }else{
     list.style.display = 'none';
-  });
+  }
 })
+
+function filterSelectedTagList(list, searchTagValue){
+  console.log(list)
+  if(list){
+    return list.filter((tag) => tag.toLowerCase().includes(searchTagValue.trim().toLowerCase()))
+  }
+}
 
 
 
@@ -155,14 +216,24 @@ function displaySelectedTag(arr, type){
     if(tag){
       tag = tag[0].toUpperCase() + tag.substring(1);
       tagList.insertAdjacentHTML('beforeend', `
-      <div>${tag} <i class="las la-times-circle" id=tag_${index}></i></div>
+      <div>${tag} <i class="las la-times-circle" id=tag_${type}_${index}></i></div>
       `)
-      document.querySelector(`#tag_${index}`).style.borderRadius = '10px';
-      document.querySelector(`#tag_${index}`).addEventListener('click', () =>{
+      document.querySelector(`#tag_${type}_${index}`).style.borderRadius = '10px';
+      document.querySelector(`#tag_${type}_${index}`).addEventListener('click', () =>{
         arr.splice(arr.indexOf(tag), 1);
         tagList.innerHTML = "";
-        displaySelectedTag(arr, type)
-        recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
+        displaySelectedTag(arr, type);
+        switch(type){
+          case 'ingredient':
+            recipes = launchSearch(RECIPES, arr, selectedUstencils, selectedAppliance, searchValue);
+            break;
+          case 'appliance':
+            recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, arr, searchValue);
+            break;
+          case 'ustensil':
+            recipes = launchSearch(RECIPES, selectedIngredients, arr, selectedAppliance, searchValue);
+            break;
+        }
         displayRecipes(recipes);
       })
     }
