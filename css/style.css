@@ -43,16 +43,31 @@ ul{
     overflow-y: scroll;
 }
 
-#ingredientList{
+#ingredientList, #selected_items_ingredient > div{
     background-color: #3b82f6;
 }
 
-#applianceList{
+#applianceList, #selected_items_appliance > div{
     background-color: #34d399;
 }
 
-#ustensilList{
+#ustensilList, #selected_items_ustensil > div{
     background-color: #f87171;
+}
+
+#selected_items{
+    display: flex;
+}
+
+#selected_items > div{
+    display: flex;
+}
+
+#selected_items > div > div{
+    color: white;
+    padding: 7px 14px;
+    border-radius: 10px;
+    margin-right: 10px;
 }
 
 #result-list{

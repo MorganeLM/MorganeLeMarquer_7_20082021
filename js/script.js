@@ -14,11 +14,12 @@ let selectedUstencils = [];
 displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
 
 let searchInput = document.querySelector('#search input');
-searchInput.value = "";
-searchInput.addEventListener('change', function(e){
+//searchInput.value = "";
+searchInput.addEventListener('input', function(e){
   searchValue = e.target.value.trim();
   if(searchValue.length >= 3){
-    displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
+    recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue)
+    displayRecipes(recipes);
   }
 })
 
@@ -40,7 +41,7 @@ document.querySelector('#ingredientInput').addEventListener('click', function(){
     }
     recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
     displayRecipes(recipes);
-    displaySelectedTag(selectedIngredients, 'ingredientTag')
+    displaySelectedTag(selectedIngredients, 'ingredient')
     list.innerHTML = "";
     list.style.display = 'none';
   });
@@ -59,8 +60,11 @@ document.querySelector('#applianceInput').addEventListener('click', function(){
         selectedAppliance = e.target.innerHTML;
       }
     }
-    displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
-    displaySelectedTag([selectedAppliance], 'applianceTag');
+    recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
+    displayRecipes(recipes);
+    displaySelectedTag([selectedAppliance], 'appliance')
+    list.innerHTML = "";
+    list.style.display = 'none';
   });
 })
 
@@ -77,8 +81,11 @@ document.querySelector('#ustensilInput').addEventListener('click', function(){
         selectedUstencils.push(e.target.innerHTML)
       }
     }
-    displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
-    displaySelectedTag(selectedUstencils, 'ustensilTag')
+    recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
+    displayRecipes(recipes);
+    displaySelectedTag(selectedUstencils, 'ustensil');
+    list.innerHTML = "";
+    list.style.display = 'none';
   });
 })
 
@@ -142,19 +149,21 @@ function displayRecipes(recipes){
 }
 
 function displaySelectedTag(arr, type){
-  let tagList = document.querySelector('#selected_items');
+  let tagList = document.querySelector('#selected_items_'+type);
   tagList.innerHTML = "";
   arr.forEach((tag, index) => {
     if(tag){
       tag = tag[0].toUpperCase() + tag.substring(1);
       tagList.insertAdjacentHTML('beforeend', `
-      <div class='${type}'>${tag} <i class="las la-times-circle" id=tag_${index}></i></div>
+      <div>${tag} <i class="las la-times-circle" id=tag_${index}></i></div>
       `)
+      document.querySelector(`#tag_${index}`).style.borderRadius = '10px';
       document.querySelector(`#tag_${index}`).addEventListener('click', () =>{
         arr.splice(arr.indexOf(tag), 1);
         tagList.innerHTML = "";
         displaySelectedTag(arr, type)
-        displayRecipes(launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
+        recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
+        displayRecipes(recipes);
       })
     }
   })
