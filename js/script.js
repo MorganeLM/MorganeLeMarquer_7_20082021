@@ -27,11 +27,11 @@ searchInput.addEventListener('input', function(e){
   }
   displayRecipes(recipes);
 })
-document.querySelector('#resestSearch').addEventListener('click', () => {
-  searchInput.value = ''
-  recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, '')
-  displayRecipes(recipes);
-})
+// document.querySelector('#resestSearch').addEventListener('click', () => {
+//   searchInput.value = ''
+//   recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, '')
+//   displayRecipes(recipes);
+// })
 
 let searchIngredientInput = document.querySelector('#ingredientInput');
 let searchApplianceInput = document.querySelector('#applianceInput');
@@ -68,7 +68,7 @@ function displayTags(tagListToggle, listElement, getItemsForTag, selectedItems, 
   }
 }
 
-document.querySelector('#ingredientInput').addEventListener('focus', function(){
+document.querySelector('#ingredientInput').addEventListener('click', function(){
   ingredientListToggle = !ingredientListToggle;
   let list = document.querySelector('#ingredientList');
   if(ingredientListToggle){
@@ -90,6 +90,7 @@ document.querySelector('#ingredientInput').addEventListener('focus', function(){
       displaySelectedTag(selectedIngredients, 'ingredient');
       list.innerHTML = "";
       list.style.display = 'none';
+      ingredientListToggle = false;
     });
   }else{
     list.style.display = 'none';
@@ -116,6 +117,7 @@ document.querySelector('#applianceInput').addEventListener('click', function(){
       displaySelectedTag([selectedAppliance], 'appliance')
       list.innerHTML = "";
       list.style.display = 'none';
+      applianceListToggle = false;
     });
   }else{
     list.style.display = 'none';
@@ -142,6 +144,7 @@ document.querySelector('#ustensilInput').addEventListener('click', function(){
       displaySelectedTag(selectedUstencils, 'ustensil');
       list.innerHTML = "";
       list.style.display = 'none';
+      ustencilListToggle = false;
     });
   }else{
     list.style.display = 'none';
