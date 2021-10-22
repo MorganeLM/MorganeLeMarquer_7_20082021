@@ -16,8 +16,8 @@ let ustencilListToggle = false;
 // Display all recipes on load
 displayRecipes(launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue));
 
+// Search when typing on main input search
 let searchInput = document.querySelector('#search input');
-//searchInput.value = "";
 searchInput.addEventListener('input', function(e){
   searchValue = e.target.value.trim();
   if(searchValue.length >= 3){
@@ -27,12 +27,17 @@ searchInput.addEventListener('input', function(e){
   }
   displayRecipes(recipes);
 })
+document.querySelector('#resestSearch').addEventListener('click', () => {
+  searchInput.value = ''
+  recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, '')
+  displayRecipes(recipes);
+})
 
 let searchIngredientInput = document.querySelector('#ingredientInput');
 let searchApplianceInput = document.querySelector('#applianceInput');
 let searchUstensilInput = document.querySelector('#ustensilInput');
 let tags;
-// searchIngredientInput.addEventListener('input', filterSelectedTagList(tags, searchIngredientInput.value))
+searchIngredientInput.addEventListener('change', filterSelectedTagList(tags, searchIngredientInput.value))
 
 // generic function for event on input -> not working
 function displayTags(tagListToggle, listElement, getItemsForTag, selectedItems, type){
@@ -63,7 +68,7 @@ function displayTags(tagListToggle, listElement, getItemsForTag, selectedItems, 
   }
 }
 
-document.querySelector('#ingredientInput').addEventListener('click', function(){
+document.querySelector('#ingredientInput').addEventListener('focus', function(){
   ingredientListToggle = !ingredientListToggle;
   let list = document.querySelector('#ingredientList');
   if(ingredientListToggle){
@@ -150,6 +155,8 @@ function filterSelectedTagList(list, searchTagValue){
   }
 }
 
+let test = filterSelectedTagList([ "Ananas", "Banane", "Glace à la vanille", "Kiwi", "Lait", "Mangue", "Miel" ], "M")
+console.log('test', test)
 
 
 function matchIngredients(recipe, selectedIngredients){

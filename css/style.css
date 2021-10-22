@@ -23,6 +23,15 @@ ul{
     width: 100%;
 }
 
+#resestSearch{
+    position: absolute;
+    right: 75px;
+    top: 28px;
+    font-size: 1.2em;
+    color: rgb(136, 136, 136);
+    z-index: 5;
+}
+
 #advancedSearch > div{
     position: relative;
 }
@@ -33,7 +42,7 @@ ul{
 
 #ingredientList, #applianceList, #ustensilList{
     position: absolute;
-    top: 61px;
+    top: 58px;
     width: 90%;
     color: white;
     display: grid;
@@ -43,16 +52,26 @@ ul{
     overflow-y: scroll;
 }
 
-#ingredientList, #selected_items_ingredient > div{
+#ingredientList, #ingredientInput, #selected_items_ingredient > div{
     background-color: #3b82f6;
 }
 
-#applianceList, #selected_items_appliance > div{
+#applianceList, #applianceInput, #selected_items_appliance > div{
     background-color: #34d399;
 }
 
-#ustensilList, #selected_items_ustensil > div{
+#ustensilList, #ustensilInput, #selected_items_ustensil > div{
     background-color: #f87171;
+}
+
+#ingredientInput, #applianceInput, #ustensilInput{
+    color: white;
+    border-radius: 7px;
+    border: none;
+}
+
+#ingredientInput::placeholder, #applianceInput::placeholder, #ustensilInput::placeholder{
+    color: white;
 }
 
 #selected_items{
