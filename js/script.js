@@ -71,7 +71,34 @@ function displayTags(tagListToggle, listElement, getItemsForTag, selectedItems, 
 
 
 let inputValue = '';
-searchIngredientInput.addEventListener('input', e => inputValue = e.target.value)
+searchIngredientInput.addEventListener('input', e => {
+  inputValue = e.target.value;
+  console.log('inputValue', inputValue)
+  let list = document.querySelector('#ingredientList');
+  list.innerHTML = '';
+  tags = tagService.getIngredientForTags(recipes);
+  tags = filterSelectedTagList(tags, inputValue);
+  tags.forEach(tag => {
+    list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
+  })
+  list.addEventListener("click", function(e) {
+    // e.target is the clicked element!
+    if(e.target && e.target.nodeName == "LI") {
+      if(selectedIngredients.indexOf(e.target.innerHTML) === -1){
+        selectedIngredients.push(e.target.innerHTML)
+        recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
+        displayRecipes(recipes);
+        displaySelectedTag(selectedIngredients, 'ingredient');
+        searchIngredientInput.value = ""; // not working !!
+      }
+    }
+    list.innerHTML = "";
+    list.style.display = 'none';
+    searchIngredientInputLabel.classList = 'block';
+    searchIngredientInput.classList = 'none';
+    ingredientListToggle = false;
+  });
+})
 
 searchIngredientInputLabel.addEventListener('click', function(e){
   ingredientListToggle = !ingredientListToggle;
@@ -163,14 +190,14 @@ document.querySelector('#ustensilInput').addEventListener('click', function(){
 })
 
 function filterSelectedTagList(list, searchTagValue){
-  console.log(list)
+  // console.log(list)
   if(list){
     return list.filter((tag) => tag.toLowerCase().includes(searchTagValue.trim().toLowerCase()))
   }
 }
 
-let test = filterSelectedTagList([ "Ananas", "Banane", "Glace à la vanille", "Kiwi", "Lait", "Mangue", "Miel" ], "M")
-console.log('test', test)
+// let test = filterSelectedTagList([ "Ananas", "Banane", "Glace à la vanille", "Kiwi", "Lait", "Mangue", "Miel" ], "M")
+// console.log('test', test)
 
 
 function matchIngredients(recipe, selectedIngredients){
