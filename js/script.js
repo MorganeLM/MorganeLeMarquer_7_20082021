@@ -27,25 +27,24 @@ searchInput.addEventListener('input', function(e){
   }
   displayRecipes(recipes);
 })
-// document.querySelector('#resestSearch').addEventListener('click', () => {
-//   searchInput.value = ''
-//   recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, '')
-//   displayRecipes(recipes);
-// })
 
 let searchIngredientInput = document.querySelector('#ingredientInput');
 let searchApplianceInput = document.querySelector('#applianceInput');
 let searchUstensilInput = document.querySelector('#ustensilInput');
+let searchIngredientInputLabel = document.querySelector('#ingredientInputLabel');
+let searchApplianceInputLabel = document.querySelector('#applianceInputLabel');
+let searchUstensilInputLabel = document.querySelector('#ustensilInputLabel');
 let tags;
 searchIngredientInput.addEventListener('change', filterSelectedTagList(tags, searchIngredientInput.value))
 
 // generic function for event on input -> not working
 function displayTags(tagListToggle, listElement, getItemsForTag, selectedItems, type){
+  console.log(tagListToggle)
   tagListToggle = !tagListToggle;
   let list = document.querySelector(listElement);
   if(tagListToggle){
     list.style.display = 'block';
-    tags = tagService.getItemsForTag(recipes);
+    tags = getItemsForTag(recipes);
     console.log(tags)
     tags.forEach(tag => {
       list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
@@ -68,13 +67,21 @@ function displayTags(tagListToggle, listElement, getItemsForTag, selectedItems, 
   }
 }
 
-document.querySelector('#ingredientInput').addEventListener('click', function(){
+//document.querySelector('#ingredientInputLabel').addEventListener('click', displayTags(ingredientListToggle, '#ingredientList', tagService.getIngredientForTags, selectedIngredients, 'ingredient'))
+
+
+let inputValue = '';
+searchIngredientInput.addEventListener('input', e => inputValue = e.target.value)
+
+searchIngredientInputLabel.addEventListener('click', function(e){
   ingredientListToggle = !ingredientListToggle;
+  searchIngredientInputLabel.classList = 'hide';
+  searchIngredientInput.classList = 'block';
   let list = document.querySelector('#ingredientList');
   if(ingredientListToggle){
     list.style.display = 'block';
     tags = tagService.getIngredientForTags(recipes);
-    console.log(tags)
+    filterSelectedTagList(tags, inputValue);
     tags.forEach(tag => {
       list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
     })
@@ -83,17 +90,21 @@ document.querySelector('#ingredientInput').addEventListener('click', function(){
       if(e.target && e.target.nodeName == "LI") {
         if(selectedIngredients.indexOf(e.target.innerHTML) === -1){
           selectedIngredients.push(e.target.innerHTML)
+          recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
+          displayRecipes(recipes);
+          displaySelectedTag(selectedIngredients, 'ingredient');
         }
       }
-      recipes = launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
-      displayRecipes(recipes);
-      displaySelectedTag(selectedIngredients, 'ingredient');
       list.innerHTML = "";
       list.style.display = 'none';
+      searchIngredientInputLabel.classList = 'block';
+      searchIngredientInput.classList = 'none';
       ingredientListToggle = false;
     });
   }else{
     list.style.display = 'none';
+    searchIngredientInputLabel.classList = 'block';
+    searchIngredientInput.classList = 'none';
   }
 })
 
@@ -250,7 +261,11 @@ function displaySelectedTag(arr, type){
   })
 }
 
-
+document.querySelector('#resestSearch').addEventListener('click', () => {
+  searchInput.value = ''
+  recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, '')
+  displayRecipes(recipes);
+})
 
 
 // function research(request, appliance, ustensil, ingredients) {

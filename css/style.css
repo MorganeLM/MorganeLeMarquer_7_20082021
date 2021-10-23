@@ -15,6 +15,14 @@ ul{
     list-style-type: none;
 }
 
+.show{
+    display: block;
+}
+
+.hide{
+    display: none;
+}
+
 #search ul > li{
     margin: 0;
     padding: 5px;
@@ -36,6 +44,14 @@ ul{
     position: relative;
 }
 
+#advancedSearch > div label{
+    position: absolute;
+    color: white;
+    width: 87%;
+    padding: 10px 15px;
+    border-radius: 7px;
+}
+
 #advancedSearch .input-group > .custom-file, .input-group > .custom-select, .input-group > .form-control{
     width: 100px;
 }
@@ -52,19 +68,21 @@ ul{
     overflow-y: scroll;
 }
 
-#ingredientList, #ingredientInput, #selected_items_ingredient > div{
+#ingredientList, #ingredientInput, #selected_items_ingredient > div, #ingredientInputLabel{
     background-color: #3b82f6;
 }
 
-#applianceList, #applianceInput, #selected_items_appliance > div{
+#applianceList, #applianceInput, #selected_items_appliance > div, #applianceInputLabel{
     background-color: #34d399;
 }
 
-#ustensilList, #ustensilInput, #selected_items_ustensil > div{
+#ustensilList, #ustensilInput, #selected_items_ustensil > div, #ustensilInputLabel{
     background-color: #f87171;
 }
 
 #ingredientInput, #applianceInput, #ustensilInput{
+    padding: 10px 15px;
+    width: 100%;
     color: white;
     border-radius: 7px;
     border: none;
@@ -72,6 +90,7 @@ ul{
 
 #ingredientInput::placeholder, #applianceInput::placeholder, #ustensilInput::placeholder{
     color: white;
+    opacity: 0.8;
 }
 
 #selected_items{
