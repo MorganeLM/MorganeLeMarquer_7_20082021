@@ -40,6 +40,20 @@ ul{
     z-index: 5;
 }
 
+#noResult{
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#noResult > button{
+    border-radius: 10px;
+    padding: 7px 14px;
+    margin-top: 10px;
+    background-color: white;
+}
+
 #advancedSearch > div{
     position: relative;
 }

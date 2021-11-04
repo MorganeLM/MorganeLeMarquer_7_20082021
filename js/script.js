@@ -360,6 +360,21 @@ function displayRecipes(recipes){
       ingredientList.insertAdjacentHTML('beforeend', `<li><strong>${ingredient.ingredient} :</strong> ${quantity} ${unit}</li>`)
     })
   });
+  if(recipes.length === 0){
+    resultListElement.innerHTML = "<div id='noResult'><p>Aucune recette ne correspond à votre recherche.</p><button>Réinitialiser</button></div>";
+    document.querySelector('#noResult > button').addEventListener('click', () => {
+      selectedIngredients = [];
+      selectedUstencils = [];
+      selectedAppliance = '';
+      searchValue = '';
+      searchInput.value = '';
+      recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
+      displayRecipes(recipes);
+      displaySelectedTag(selectedUstencils, 'ustensil');
+      displaySelectedTag(selectedIngredients, 'ingredient');
+      displaySelectedTag(selectedAppliance, 'appliance');
+    })
+  }
 }
 
 function displaySelectedTag(arr, type){
