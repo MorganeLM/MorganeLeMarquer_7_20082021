@@ -205,7 +205,6 @@ searchApplianceInputLabel.addEventListener('click', function(e){
   }
 })
 
-
 // ustensil tag
 let ustensilList = document.querySelector('#ustensilList');
 
@@ -275,6 +274,28 @@ document.querySelector('#resetSearch').addEventListener('click', () => {
   searchInput.value = ''
   recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, '')
   displayRecipes(recipes);
+})
+
+// close all when click outside menu (->header for now)
+document.querySelector('header').addEventListener('click', () => {
+  searchIngredientInput.value = "";
+  ingredientList.innerHTML = "";
+  ingredientList.style.display = 'none';
+  searchIngredientInputLabel.classList = 'block';
+  searchIngredientInput.classList = 'none';
+  ingredientListToggle = false;
+  //
+  applianceList.innerHTML = "";
+  applianceList.style.display = 'none';
+  searchApplianceInputLabel.classList = 'block';
+  searchApplianceInput.classList = 'none';
+  applianceListToggle = false;
+  //
+  ustensilList.innerHTML = "";
+  ustensilList.style.display = 'none';
+  searchUstensilInputLabel.classList = 'block';
+  searchUstensilInput.classList = 'none';
+  ustencilListToggle = false;
 })
 
 // FUNCTIONS
@@ -355,11 +376,6 @@ function displaySelectedTag(arr, type){
         arr.splice(arr.indexOf(tag), 1);
         tagList.innerHTML = "";
         displaySelectedTag(arr, type);
-        console.log('arr', arr);
-        console.log('selectedIngredients', selectedIngredients);
-        console.log('selectedAppliance', selectedAppliance);
-        console.log('selectedUstencils', selectedUstencils);
-
         switch(type){
           case 'ingredient':
             recipes = launchSearch(RECIPES, arr, selectedUstencils, selectedAppliance, searchValue);
