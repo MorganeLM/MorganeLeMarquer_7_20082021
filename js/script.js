@@ -4,7 +4,7 @@ import * as tagService from "/js/tags.js";
 
 let resultListElement = document.querySelector('#result-list');
 
-// Initialize the search 
+// Initialize the search
 let recipes = RECIPES;
 let searchValue = ''
 let selectedIngredients = [];
@@ -73,7 +73,6 @@ function displayTags(tagListToggle, listElement, getItemsForTag, selectedItems, 
 let inputValue = '';
 searchIngredientInput.addEventListener('input', e => {
   inputValue = e.target.value;
-  console.log('inputValue', inputValue)
   let list = document.querySelector('#ingredientList');
   list.innerHTML = '';
   tags = tagService.getIngredientForTags(recipes);
@@ -89,9 +88,9 @@ searchIngredientInput.addEventListener('input', e => {
         recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
         displayRecipes(recipes);
         displaySelectedTag(selectedIngredients, 'ingredient');
-        searchIngredientInput.value = ""; // not working !!
       }
     }
+    searchIngredientInput.value = ""; // reset the input field
     list.innerHTML = "";
     list.style.display = 'none';
     searchIngredientInputLabel.classList = 'block';
@@ -190,15 +189,10 @@ document.querySelector('#ustensilInput').addEventListener('click', function(){
 })
 
 function filterSelectedTagList(list, searchTagValue){
-  // console.log(list)
   if(list){
     return list.filter((tag) => tag.toLowerCase().includes(searchTagValue.trim().toLowerCase()))
   }
 }
-
-// let test = filterSelectedTagList([ "Ananas", "Banane", "Glace à la vanille", "Kiwi", "Lait", "Mangue", "Miel" ], "M")
-// console.log('test', test)
-
 
 function matchIngredients(recipe, selectedIngredients){
   let reducedRecipeIngredients = [];
@@ -293,46 +287,3 @@ document.querySelector('#resestSearch').addEventListener('click', () => {
   recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, '')
   displayRecipes(recipes);
 })
-
-
-// function research(request, appliance, ustensil, ingredients) {
-//   let result = data.recipes.filter(recipe => 
-//       matchAppliance(recipe, appliance) 
-//       && matchUstensils(recipe, ustensil) 
-//       && matchTagsIngredients(recipe, ingredients)
-//       && ( matchName(recipe, request) || matchDescriptions(recipe, request) || matchIngredients(recipe, request))
-//   );
-//   return result;
-// }
-
-
-//refacto create tag list (not working on click)
-// function createTagList(listElement, getFunction){
-//   let list = document.querySelector(listElement);
-//   let tags = getFunction(RECIPES);
-//   tags.forEach(tag => {
-//     list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
-//   })
-//   list.addEventListener("click", function(e) {
-//     // e.target is the clicked element!
-//     if(e.target && e.target.nodeName == "LI") {
-//       if(selectedTag.indexOf(e.target.innerHTML) === -1){
-//         selectedTag.push(e.target.innerHTML)
-//       }
-//     }
-//   });
-// }
-
-// document.querySelector('#ingredientInput').addEventListener('click', createTagList('#ingredientList', tagService.getIngredientForTags));
-// document.querySelector('#applianceInput').addEventListener('click', createTagList('#applianceList', tagService.getApplianceForTags));
-// document.querySelector('#ustensilInput').addEventListener('click', createTagList('#ustensilList', tagService.getUstensilForTags));
-
-// // composant pour les tags
-// class TagInput extends HTMLElement{
-//   constructor(){
-//     super();
-//     this.innerHTML = 'Hello Input'
-//   }
-// }
-
-// customElements.define('tag-input', TagInput)
