@@ -54,14 +54,19 @@ ul{
     background-color: white;
 }
 
+#advancedSearch{
+    display: flex;
+}
+
 #advancedSearch > div{
     position: relative;
+    margin-right: 30px;
+    margin-bottom: 10px;
 }
 
 #advancedSearch > div label{
-    position: absolute;
     color: white;
-    width: 87%;
+    width: 200px;
     padding: 10px 15px;
     border-radius: 7px;
 }
@@ -71,15 +76,27 @@ ul{
 }
 
 #ingredientList, #applianceList, #ustensilList{
+    display: none;
     position: absolute;
     top: 58px;
-    width: 90%;
     color: white;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
     z-index: 3;
-    max-height: 400px;
-    overflow-y: scroll;
+    padding-bottom: 7px;
+    border-radius: 5px;
+}
+
+#ingredientList{
+    grid-template-columns: repeat(3, 1fr);
+    width: 600px;
+}
+
+#applianceList{
+    width: 200px;
+}
+
+#ustensilList{
+    grid-template-columns: repeat(2, 1fr);
+    width: 400px;
 }
 
 #ingredientList, #ingredientInput, #selected_items_ingredient > div, #ingredientInputLabel{
@@ -96,7 +113,6 @@ ul{
 
 #ingredientInput, #applianceInput, #ustensilInput{
     padding: 10px 15px;
-    width: 100%;
     color: white;
     border-radius: 7px;
     border: none;
@@ -105,6 +121,18 @@ ul{
 #ingredientInput::placeholder, #applianceInput::placeholder, #ustensilInput::placeholder{
     color: white;
     opacity: 0.8;
+}
+
+#ingredientInput{
+    width: 600px;
+}
+
+#applianceInput{
+    width: 200px;
+}
+
+#ustensilInput{
+    width: 400px;
 }
 
 #selected_items{

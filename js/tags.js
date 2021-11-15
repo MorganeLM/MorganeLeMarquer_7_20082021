@@ -8,7 +8,10 @@ export function getIngredientForTags(array){
             }
         })
     });
-    return ingredients.sort();
+    if(ingredients.length > 30){
+        ingredients = ingredients.slice(0, 30);
+    }
+    return ingredients;
 }
 
 export function getUstensilForTags(array){

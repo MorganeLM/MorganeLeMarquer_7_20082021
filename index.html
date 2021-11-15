@@ -16,7 +16,7 @@
         </header>
         <main class="container">
             <section id="search">
-                <div class="input-group mt-4 p-4 border-1 rounded-md">
+                <div class="input-group mt-4 px-4 pt-4 border-1 rounded-md">
                     <input type="text" class="form-control" aria-label="Rechercher un ingrédient, appareil, ustenciles ou recette" placeholder="Rechercher un ingrédient, appareil, ustenciles ou recette">
                     <span id="resetSearch"><i class="las la-times-circle"></i></span>
                     <div class="input-group-append">
@@ -24,24 +24,24 @@
                     </div>
                 </div>
 
-                <div id="selected_items">
+                <div id="selected_items" class="mt-4">
                     <div id="selected_items_ingredient"></div>
                     <div id="selected_items_appliance"></div>
                     <div id="selected_items_ustensil"></div>
                 </div>
 
-                <div id="advancedSearch" style="display: flex;">
-                    <div class="input-group p-4 border-1 rounded-md">
+                <div id="advancedSearch" class="px-4">
+                    <div class="py-4 border-1 rounded-md">
                         <label for="ingredientInput" id="ingredientInputLabel">Ingrédients</label>
                         <input id="ingredientInput" class="hide" type="text" class="form-control" aria-label="Rechercher un ingrédient" placeholder="Rechercher un ingrédient">
                         <ul id="ingredientList"></ul>
                     </div>
-                    <div class="input-group p-4 border-1 rounded-md">
+                    <div class="py-4 border-1 rounded-md">
                         <label for="applianceInput" id="applianceInputLabel">Appareils</label>
                         <input id="applianceInput" class="hide" type="text" class="form-control" aria-label="Rechercher un appareil" placeholder="Rechercher un appareil">
                         <ul id="applianceList"></ul>
                     </div>
-                    <div class="input-group p-4 border-1 rounded-md">
+                    <div class="py-4 border-1 rounded-md">
                         <label for="ustensilInput" id="ustensilInputLabel">Ustensiles</label>
                         <input id="ustensilInput" class="hide" type="text" class="form-control" aria-label="Rechercher un ustensile" placeholder="Rechercher un ustensile">
                         <ul id="ustensilList"></ul>
