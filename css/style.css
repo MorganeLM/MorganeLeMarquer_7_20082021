@@ -23,6 +23,21 @@ ul{
     display: none;
 }
 
+#mainSearch{
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-right: none;
+}
+
+.la-search{
+    font-size: 1.5em;
+}
+
+.input-group-text{
+    background-color: rgb(240, 240, 240);
+    border-left: none;
+}
+
 #search ul > li{
     margin: 0;
     padding: 5px;
@@ -34,7 +49,7 @@ ul{
 #resetSearch{
     position: absolute;
     right: 75px;
-    top: 28px;
+    top: 33px;
     font-size: 1.2em;
     color: rgb(136, 136, 136);
     z-index: 5;
