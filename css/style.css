@@ -76,6 +76,8 @@ ul{
 }
 
 #ingredientList, #applianceList, #ustensilList{
+    grid-template-columns: repeat(3, 1fr);
+    width: 600px;
     display: none;
     position: absolute;
     top: 58px;
@@ -83,20 +85,6 @@ ul{
     z-index: 3;
     padding-bottom: 7px;
     border-radius: 5px;
-}
-
-#ingredientList{
-    grid-template-columns: repeat(3, 1fr);
-    width: 600px;
-}
-
-#applianceList{
-    width: 200px;
-}
-
-#ustensilList{
-    grid-template-columns: repeat(2, 1fr);
-    width: 400px;
 }
 
 #ingredientList, #ingredientInput, #selected_items_ingredient > div, #ingredientInputLabel{
@@ -121,6 +109,11 @@ ul{
 #ingredientInput::placeholder, #applianceInput::placeholder, #ustensilInput::placeholder{
     color: white;
     opacity: 0.8;
+}
+
+#ingredientInput:focus-visible, #applianceInput:focus-visible, #ustensilInput:focus-visible, #ingredientInput:focus, #applianceInput:focus, #ustensilInput:focus{
+    outline-color: transparent;
+    border: none;
 }
 
 #ingredientInput{
