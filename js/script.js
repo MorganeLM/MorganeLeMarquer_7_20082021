@@ -85,7 +85,21 @@ let ingredientList = document.querySelector('#ingredientList');
 searchIngredientInput.addEventListener('input', e => {
   ingredientList.innerHTML = '';
   tags = tagService.getIngredientForTags(recipes);
+  tags = tags.filter(tag => !selectedIngredients.includes(tag))
   tags = filterSelectedTagList(tags, e.target.value);
+  if(tags.length === 1){
+    ingredientList.style.width = '210px';
+    ingredientList.style.gridTemplateColumns = '1fr';
+    searchIngredientInput.style.width = '210px';
+  }else if(tags.length === 2){
+    ingredientList.style.width = '400px';
+    ingredientList.style.gridTemplateColumns = '1fr 1fr';
+    searchIngredientInput.style.width = '400px';
+  }else{
+    ingredientList.style.width = '600px';
+    ingredientList.style.gridTemplateColumns = '1fr 1fr 1fr';
+    searchIngredientInput.style.width = '600px';
+  }
   tags.forEach(tag => {
     ingredientList.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
   })
@@ -130,8 +144,20 @@ searchIngredientInputLabel.addEventListener('click', function(e){
     }
     //display ingredient tag list
     if(ingredientListToggle){
-      searchIngredientInput.style.width = '600px';
       ingredientList.style.display = 'grid';
+      if(tags.length === 1){
+        ingredientList.style.width = '210px';
+        ingredientList.style.gridTemplateColumns = '1fr';
+        searchIngredientInput.style.width = '210px';
+      }else if(tags.length === 2){
+        ingredientList.style.width = '400px';
+        ingredientList.style.gridTemplateColumns = '1fr 1fr';
+        searchIngredientInput.style.width = '400px';
+      }else{
+        ingredientList.style.width = '600px';
+        ingredientList.style.gridTemplateColumns = '1fr 1fr 1fr';
+        searchIngredientInput.style.width = '600px';
+      }
       tags.forEach(tag => {
         ingredientList.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
       })
@@ -167,7 +193,21 @@ let applianceList = document.querySelector('#applianceList');
 searchApplianceInput.addEventListener('input', e => {
   applianceList.innerHTML = '';
   tags = tagService.getApplianceForTags(recipes);
+  tags = tags.filter(tag => !selectedAppliance.includes(tag))
   tags = filterSelectedTagList(tags, e.target.value);
+  if(tags.length === 1){
+    applianceList.style.width = '210px';
+    applianceList.style.gridTemplateColumns = '1fr';
+    searchApplianceInput.style.width = '210px';
+  }else if(tags.length === 2){
+    applianceList.style.width = '400px';
+    applianceList.style.gridTemplateColumns = '1fr 1fr';
+    searchApplianceInput.style.width = '400px';
+  }else{
+    applianceList.style.width = '600px';
+    applianceList.style.gridTemplateColumns = '1fr 1fr 1fr';
+    searchApplianceInput.style.width = '600px';
+  }
   tags.forEach(tag => {
     applianceList.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
   })
@@ -213,7 +253,19 @@ searchApplianceInputLabel.addEventListener('click', function(e){
     //display appliance tag list
     if(applianceListToggle){
       applianceList.style.display = 'grid';
-      searchApplianceInput.style.width = '600px';
+      if(tags.length === 1){
+        applianceList.style.width = '210px';
+        applianceList.style.gridTemplateColumns = '1fr';
+        searchApplianceInput.style.width = '210px';
+      }else if(tags.length === 2){
+        applianceList.style.width = '400px';
+        applianceList.style.gridTemplateColumns = '1fr 1fr';
+        searchApplianceInput.style.width = '400px';
+      }else{
+        applianceList.style.width = '600px';
+        applianceList.style.gridTemplateColumns = '1fr 1fr 1fr';
+        searchApplianceInput.style.width = '600px';
+      }
       tags.forEach(tag => {
         applianceList.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
       })
@@ -249,7 +301,21 @@ let ustensilList = document.querySelector('#ustensilList');
 searchUstensilInput.addEventListener('input', e => {
   ustensilList.innerHTML = '';
   tags = tagService.getUstensilForTags(recipes);
+  tags = tags.filter(tag => !selectedUstencils.includes(tag))
   tags = filterSelectedTagList(tags, e.target.value);
+  if(tags.length === 1){
+    ustensilList.style.width = '210px';
+    ustensilList.style.gridTemplateColumns = '1fr';
+    searchUstensilInput.style.width = '210px';
+  }else if(tags.length === 2){
+    ustensilList.style.width = '400px';
+    ustensilList.style.gridTemplateColumns = '1fr 1fr';
+    searchUstensilInput.style.width = '400px';
+  }else{
+    ustensilList.style.width = '600px';
+    ustensilList.style.gridTemplateColumns = '1fr 1fr 1fr';
+    searchUstensilInput.style.width = '600px';
+  }
   tags.forEach(tag => {
     ustensilList.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
   })
@@ -295,7 +361,19 @@ searchUstensilInputLabel.addEventListener('click', function(e){
     //display ustensil tag list
     if(ustencilListToggle){
       ustensilList.style.display = 'grid';
-      searchUstensilInput.style.width = '600px';
+      if(tags.length === 1){
+        ustensilList.style.width = '210px';
+        ustensilList.style.gridTemplateColumns = '1fr';
+        searchUstensilInput.style.width = '210px';
+      }else if(tags.length === 2){
+        ustensilList.style.width = '400px';
+        ustensilList.style.gridTemplateColumns = '1fr 1fr';
+        searchUstensilInput.style.width = '400px';
+      }else{
+        ustensilList.style.width = '600px';
+        ustensilList.style.gridTemplateColumns = '1fr 1fr 1fr';
+        searchUstensilInput.style.width = '600px';
+      }
       tags.forEach(tag => {
         ustensilList.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
       })
