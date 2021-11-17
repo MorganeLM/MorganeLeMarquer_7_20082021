@@ -80,10 +80,18 @@ ul{
 }
 
 #advancedSearch > div label{
+    position: relative;
     color: white;
     width: 200px;
     padding: 10px 15px;
     border-radius: 7px;
+}
+
+.la-angle-down{
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
 }
 
 #advancedSearch .input-group > .custom-file, .input-group > .custom-select, .input-group > .form-control{
