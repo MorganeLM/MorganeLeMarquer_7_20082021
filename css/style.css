@@ -135,8 +135,13 @@ ul{
 }
 
 #ingredientInput:focus-visible, #applianceInput:focus-visible, #ustensilInput:focus-visible, #ingredientInput:focus, #applianceInput:focus, #ustensilInput:focus{
-    outline-color: transparent;
-    border: none;
+    outline: none !important;
+}
+
+.form-control:focus{
+    outline: none !important;
+    border-color: rgb(206, 212, 218) !important;
+    box-shadow: none !important;
 }
 
 #ingredientInput{
