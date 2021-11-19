@@ -23,11 +23,13 @@ searchInput.addEventListener('input', function(e){
   if(searchValue.length >= 3){
     recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, searchValue)
   }else{
+    // display all when input value < 3 (working when wipe off)
     recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, '')
   }
   displayRecipes(recipes);
 })
 
+// Get elements to filter by tag
 let searchIngredientInput = document.querySelector('#ingredientInput');
 let searchApplianceInput = document.querySelector('#applianceInput');
 let searchUstensilInput = document.querySelector('#ustensilInput');
@@ -35,58 +37,23 @@ let searchIngredientInputLabel = document.querySelector('#ingredientInputLabel')
 let searchApplianceInputLabel = document.querySelector('#applianceInputLabel');
 let searchUstensilInputLabel = document.querySelector('#ustensilInputLabel');
 let tags;
-searchIngredientInput.addEventListener('change', filterSelectedTagList(tags, searchIngredientInput.value))
-
-// generic function for event on input -> not working
-function displayTags(tagListToggle, inputElement, inputLabelElement, listElement, getItemsForTag, selectedItems, type){
-  console.log('before', tagListToggle)
-  tagListToggle = !tagListToggle;
-  console.log('after', tagListToggle)
-  inputLabelElement.classList = 'hide';
-  inputElement.classList = 'block';
-  let list = document.querySelector(listElement);
-  if(tagListToggle){
-    list.style.display = 'block';
-    tags = getItemsForTag(recipes);
-    filterSelectedTagList(tags, inputValue);
-    console.log(tags)
-    tags.forEach(tag => {
-      list.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
-    })
-    list.addEventListener("click", function(e) {
-      // e.target is the clicked element!
-      if(e.target && e.target.nodeName == "LI") {
-        if(selectedItems.indexOf(e.target.innerHTML) === -1){
-          selectedItems.push(e.target.innerHTML)
-          recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, searchValue);
-          displayRecipes(recipes);
-          displaySelectedTag(selectedItems, type)
-        }
-      }
-      list.innerHTML = "";
-      list.style.display = 'none';
-      inputLabelElement.classList = 'block';
-      inputElement.classList = 'hide';
-      tagListToggle = false;
-    });
-  }else{
-    list.style.display = 'none';
-    inputLabelElement.classList = 'block';
-    inputElement.classList = 'hide';
-  }
-}
-
-//document.querySelector('#ingredientInputLabel').addEventListener('click', displayTags(ingredientListToggle, '#ingredientList', tagService.getIngredientForTags, selectedIngredients, 'ingredient'))
 
 
-// ingredient tag
+// Manage ingredient tags
 let ingredientList = document.querySelector('#ingredientList');
 
 searchIngredientInput.addEventListener('input', e => {
+  // initialize the list
   ingredientList.innerHTML = '';
+  // get the tags to dispay in function of current recipes
   tags = tagService.getIngredientForTags(recipes);
   tags = tags.filter(tag => !selectedIngredients.includes(tag))
   tags = filterSelectedTagList(tags, e.target.value);
+  // limit to 30 elements
+  if(tags.length > 30){
+    tags = tags.slice(0, 30);
+  }
+  // set number of columns and size in function of tag array size
   if(tags.length === 1){
     ingredientList.style.width = '210px';
     ingredientList.style.gridTemplateColumns = '1fr';
@@ -100,9 +67,11 @@ searchIngredientInput.addEventListener('input', e => {
     ingredientList.style.gridTemplateColumns = '1fr 1fr 1fr';
     searchIngredientInput.style.width = '600px';
   }
+  // add tags in the HTML list element
   tags.forEach(tag => {
     ingredientList.insertAdjacentHTML('beforeend', `<li>${tag}</li>`)
   })
+  // add events on tags 
   ingredientList.addEventListener("click", function(e) {
     // e.target is the clicked element!
     if(e.target && e.target.nodeName == "LI") {
@@ -403,14 +372,6 @@ searchUstensilInputLabel.addEventListener('click', function(e){
   }
 })
 
-
-// reset/clear main seach button management
-document.querySelector('#resetSearch').addEventListener('click', () => {
-  searchInput.value = ''
-  recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, '')
-  displayRecipes(recipes);
-})
-
 // close all when click outside menu (->header for now)
 document.querySelector('header').addEventListener('click', () => {
   searchIngredientInput.value = "";
@@ -462,11 +423,11 @@ function launchSearch(recipes, selectedIngredients, selectedUstencils, selectedA
   let recipesSortedByTags = recipes.filter((recipe) => matchIngredients(recipe, selectedIngredients) && matchUstensils(recipe, selectedUstencils) && matchAppliance(recipe, selectedAppliance));
 
   //v1
-  // let recipesSorted = recipesSortedByTags.filter((recipe) => {
-  //   return recipe.name.toLowerCase().includes(searchValue) ||  
-  //   recipe.ingredients.some((i) => i.ingredient.toLowerCase().includes(searchValue)) ||  
-  //   recipe.description.toLowerCase().includes(searchValue);
-  // });
+  let recipesSorted = recipesSortedByTags.filter((recipe) => {
+    return recipe.name.toLowerCase().includes(searchValue) ||  
+    recipe.ingredients.some((i) => i.ingredient.toLowerCase().includes(searchValue)) ||  
+    recipe.description.toLowerCase().includes(searchValue);
+  });
 
   // //v2
   // let recipesSorted = [];
@@ -479,42 +440,17 @@ function launchSearch(recipes, selectedIngredients, selectedUstencils, selectedA
   // });
 
   //v3
-  let recipesSorted = [];
-  for(let i=0; i < recipesSortedByTags.length; i++){
-    if(recipesSortedByTags[i].name.toLowerCase().includes(searchValue) ||  
-    recipesSortedByTags[i].ingredients.some((ing) => ing.ingredient.toLowerCase().includes(searchValue)) ||  
-    recipesSortedByTags[i].description.toLowerCase().includes(searchValue)) {
-      recipesSorted.push(recipesSortedByTags[i]);
-    }
-  }
+  // let recipesSorted = [];
+  // for(let i=0; i < recipesSortedByTags.length; i++){
+  //   if(recipesSortedByTags[i].name.toLowerCase().includes(searchValue) ||  
+  //   recipesSortedByTags[i].ingredients.some((ing) => ing.ingredient.toLowerCase().includes(searchValue)) ||  
+  //   recipesSortedByTags[i].description.toLowerCase().includes(searchValue)) {
+  //     recipesSorted.push(recipesSortedByTags[i]);
+  //   }
+  // }
 
   return recipesSorted;
 }
-
-
-// test avec if pour tag
-// function launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue){
-//   let recipesSortedByTags = recipes.filter((recipe) => {
-//     if(selectedIngredients){
-//       return matchIngredients(recipe, selectedIngredients);
-//     };
-//     if(selectedUstencils){
-//       return matchUstensils(recipe, selectedUstencils);
-//     }
-//     if(selectedAppliance){
-//       return matchAppliance(recipe, selectedAppliance);
-//     }
-//   });
-
-//   //v1
-//   let recipesSorted = recipesSortedByTags.filter((recipe) => {
-//     return recipe.name.toLowerCase().includes(searchValue) ||  
-//     recipe.ingredients.some((i) => i.ingredient.toLowerCase().includes(searchValue)) ||  
-//     recipe.description.toLowerCase().includes(searchValue);
-//   });
-
-//   return recipesSorted;
-// }
 
 function displayRecipes(recipes){
   resultListElement.innerHTML = "";
@@ -542,19 +478,7 @@ function displayRecipes(recipes){
     })
   });
   if(recipes.length === 0){
-    resultListElement.innerHTML = "<div id='noResult'><p>Aucune recette ne correspond à votre recherche.</p><button>Réinitialiser</button></div>";
-    document.querySelector('#noResult > button').addEventListener('click', () => {
-      selectedIngredients = [];
-      selectedUstencils = [];
-      selectedAppliance = '';
-      searchValue = '';
-      searchInput.value = '';
-      recipes = RECIPES;
-      displayRecipes(RECIPES);
-      displaySelectedTag(selectedUstencils, 'ustensil');
-      displaySelectedTag(selectedIngredients, 'ingredient');
-      displaySelectedTag(selectedAppliance, 'appliance');
-    })
+    resultListElement.innerHTML = "<div id='noResult'><p>Aucune recette ne correspond à votre recherche.</p></div>"
   }
 }
 

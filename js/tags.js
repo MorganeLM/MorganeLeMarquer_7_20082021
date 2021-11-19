@@ -8,9 +8,6 @@ export function getIngredientForTags(array){
             }
         })
     });
-    if(ingredients.length > 30){
-        ingredients = ingredients.slice(0, 30);
-    }
     return ingredients;
 }
 
