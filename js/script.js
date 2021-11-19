@@ -429,26 +429,6 @@ function launchSearch(recipes, selectedIngredients, selectedUstencils, selectedA
     recipe.description.toLowerCase().includes(searchValue);
   });
 
-  // //v2
-  // let recipesSorted = [];
-  // recipesSortedByTags.forEach((recipe) => {
-  //   if(recipe.name.toLowerCase().includes(searchValue) ||  
-  //   recipe.ingredients.some((i) => i.ingredient.toLowerCase().includes(searchValue)) ||  
-  //   recipe.description.toLowerCase().includes(searchValue)) {
-  //     recipesSorted.push(recipe);
-  //   }
-  // });
-
-  //v3
-  // let recipesSorted = [];
-  // for(let i=0; i < recipesSortedByTags.length; i++){
-  //   if(recipesSortedByTags[i].name.toLowerCase().includes(searchValue) ||  
-  //   recipesSortedByTags[i].ingredients.some((ing) => ing.ingredient.toLowerCase().includes(searchValue)) ||  
-  //   recipesSortedByTags[i].description.toLowerCase().includes(searchValue)) {
-  //     recipesSorted.push(recipesSortedByTags[i]);
-  //   }
-  // }
-
   return recipesSorted;
 }
 
