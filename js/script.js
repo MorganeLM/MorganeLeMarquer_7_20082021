@@ -422,12 +422,15 @@ function matchAppliance(recipe, selectedAppliance){
 function launchSearch(recipes, selectedIngredients, selectedUstencils, selectedAppliance, searchValue){
   let recipesSortedByTags = recipes.filter((recipe) => matchIngredients(recipe, selectedIngredients) && matchUstensils(recipe, selectedUstencils) && matchAppliance(recipe, selectedAppliance));
 
-  //v1
-  let recipesSorted = recipesSortedByTags.filter((recipe) => {
-    return recipe.name.toLowerCase().includes(searchValue) ||  
-    recipe.ingredients.some((i) => i.ingredient.toLowerCase().includes(searchValue)) ||  
-    recipe.description.toLowerCase().includes(searchValue);
-  });
+  //v3
+  let recipesSorted = [];
+  for(let i=0; i < recipesSortedByTags.length; i++){
+    if(recipesSortedByTags[i].name.toLowerCase().includes(searchValue) ||  
+    recipesSortedByTags[i].ingredients.some((ing) => ing.ingredient.toLowerCase().includes(searchValue)) ||  
+    recipesSortedByTags[i].description.toLowerCase().includes(searchValue)) {
+      recipesSorted.push(recipesSortedByTags[i]);
+    }
+  }
 
   return recipesSorted;
 }
