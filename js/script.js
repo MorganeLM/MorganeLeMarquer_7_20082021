@@ -19,7 +19,7 @@ displayRecipes(launchSearch(RECIPES, selectedIngredients, selectedUstencils, sel
 // Search when typing on main input search
 let searchInput = document.querySelector('#search input');
 searchInput.addEventListener('input', function(e){
-  searchValue = e.target.value.trim();
+  searchValue = e.target.value.trim().toLowerCase();
   if(searchValue.length >= 3){
     recipes = launchSearch(RECIPES, selectedIngredients, selectedUstencils, selectedAppliance, searchValue)
   }else{
