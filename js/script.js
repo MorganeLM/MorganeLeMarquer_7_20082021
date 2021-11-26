@@ -194,7 +194,7 @@ searchApplianceInput.addEventListener('input', e => {
     applianceList.innerHTML = "";
     applianceList.style.display = 'none';
     searchApplianceInputLabel.classList = 'block';
-    searchApplianceInput.classList = 'none';
+    searchApplianceInput.classList = 'hide';
     applianceListToggle = false;
   });
 })
